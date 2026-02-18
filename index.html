@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucana Tackle — Engineered for serious anglers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#F7F7F5',
+                        secondary: '#ECECEA',
+                        charcoal: '#1C1C1C',
+                        muted: '#5E5E5E',
+                        accent: '#C4161C',
+                        divider: '#D6D6D4'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Source Sans 3', 'sans-serif'],
+                    },
+                    letterSpacing: {
+                        tightest: '-.075em',
+                        tighter: '-.05em',
+                        tight: '-.025em',
+                        normal: '0.015em',
+                        wide: '0.03em',
+                        wider: '0.1em',
+                        widest: '0.12em',
+                    },
+                    lineHeight: {
+                        relaxed: '1.75',
+                        loose: '1.8'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #F7F7F5;
+            color: #1C1C1C;
+            -webkit-font-smoothing: antialiased;
+        }
+        .mega-menu-enter {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        .mega-menu-enter-active {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 300ms, transform 300ms;
+        }
+        .scroll-hide::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <div id="root"></div>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
