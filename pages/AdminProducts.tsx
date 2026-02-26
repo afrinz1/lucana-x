@@ -3,7 +3,11 @@ import { Copy, Plus, Trash2, Eye, Code } from 'lucide-react';
 import { Product } from '../types/product';
 import { CATEGORIES } from '../data';
 
-const AdminProducts: React.FC = () => {
+interface AdminProductsProps {
+  categoryId?: string;
+}
+
+const AdminProducts: React.FC<AdminProductsProps> = ({ categoryId }) => {
   const [formData, setFormData] = useState<Partial<Product>>({
     id: '',
     name: '',
@@ -24,11 +28,23 @@ const AdminProducts: React.FC = () => {
 
   const [highlights, setHighlights] = useState([{ icon: '', title: '', text: '' }]);
   const [specs, setSpecs] = useState([{ label: '', value: '' }]);
-  const [variants, setVariants] = useState([{ model: '', length: '', weight: '', action: '' }]);
+  const [variants, setVariants] = useState([{ model: '', gearRatio: '', dragForce: '', weight: '', lineCapacity: '' }]);
   const [showPreview, setShowPreview] = useState(false);
   const [generatedCode, setGeneratedCode] = useState('');
   const [copied, setCopied] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string>(categoryId || '');
+
+  // Filter categories based on the component prop
+  const availableCategories = categoryId
+    ? CATEGORIES.filter(c => c.id === categoryId)
+    : CATEGORIES;
+
+  // Auto-select the category if categoryId prop is provided
+  React.useEffect(() => {
+    if (categoryId && !formData.category) {
+      handleSelectCategory(categoryId);
+    }
+  }, [categoryId]);
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -77,7 +93,7 @@ const AdminProducts: React.FC = () => {
   };
 
   const addVariant = () => {
-    setVariants([...variants, { model: '', length: '', weight: '', action: '' }]);
+    setVariants([...variants, { model: '', gearRatio: '', dragForce: '', weight: '', lineCapacity: '' }]);
   };
 
   const removeVariant = (idx: number) => {
@@ -107,7 +123,7 @@ const AdminProducts: React.FC = () => {
       ${product.specs.map(s => `{ label: '${s.label}', value: '${s.value}' }`).join(',\n      ')}
     ],
     variants: [
-      ${product.variants.map(v => `{ model: '${v.model}', length: '${v.length || ''}', weight: '${v.weight || ''}', action: '${v.action || ''}' }`).join(',\n      ')}
+      ${product.variants.map(v => `{ model: '${v.model}', gearRatio: '${v.gearRatio || ''}', dragForce: '${v.dragForce || ''}', weight: '${v.weight || ''}', lineCapacity: '${v.lineCapacity || ''}' }`).join(',\n      ')}
     ],
     useCase: {
       title: '${product.useCase.title}',
@@ -162,7 +178,9 @@ const AdminProducts: React.FC = () => {
     <div className="min-h-screen bg-primary pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-12">
-          <h1 className="text-5xl font-semibold mb-2">Product Manager</h1>
+          <h1 className="text-5xl font-semibold mb-2">
+            {categoryId ? `${CATEGORIES.find(c => c.id === categoryId)?.name || 'Product'} Products Manager` : 'Product Manager'}
+          </h1>
           <p className="text-muted">Easily add new products without touching code</p>
         </div>
 
@@ -179,7 +197,7 @@ const AdminProducts: React.FC = () => {
                   className="px-3 py-2 border border-divider rounded text-sm"
                 >
                   <option value="">Select category to prefill</option>
-                  {CATEGORIES.map(cat => (
+                  {availableCategories.map(cat => (
                     <option key={cat.id} value={cat.id}>{cat.name}</option>
                   ))}
                 </select>
@@ -223,7 +241,7 @@ const AdminProducts: React.FC = () => {
                   className="w-full px-4 py-2 border border-divider rounded text-sm"
                 >
                   <option value="">Select category</option>
-                  {CATEGORIES.map(cat => (
+                  {availableCategories.map(cat => (
                     <option key={cat.id} value={cat.id}>{cat.name}</option>
                   ))}
                 </select>
@@ -257,7 +275,7 @@ const AdminProducts: React.FC = () => {
             {/* Highlights */}
             <div className="bg-white p-8 border border-divider">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-semibold">Highlights</h2>
+                <h2 className="text-2xl font-semibold">Key Features</h2>
                 <button
                   onClick={addHighlight}
                   className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest px-4 py-2 bg-accent text-white rounded hover:opacity-90"
@@ -354,34 +372,52 @@ const AdminProducts: React.FC = () => {
               </div>
               <div className="space-y-3">
                 {variants.map((v, idx) => (
-                  <div key={idx} className="flex gap-3">
-                    <input
-                      type="text"
-                      placeholder="Model"
-                      value={v.model}
-                      onChange={(e) => handleVariantChange(idx, 'model', e.target.value)}
-                      className="flex-1 px-3 py-2 border border-divider rounded text-sm"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Length"
-                      value={v.length || ''}
-                      onChange={(e) => handleVariantChange(idx, 'length', e.target.value)}
-                      className="flex-1 px-3 py-2 border border-divider rounded text-sm"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Weight"
-                      value={v.weight || ''}
-                      onChange={(e) => handleVariantChange(idx, 'weight', e.target.value)}
-                      className="flex-1 px-3 py-2 border border-divider rounded text-sm"
-                    />
-                    <button
-                      onClick={() => removeVariant(idx)}
-                      className="text-red-500 hover:text-red-700"
-                    >
-                      <Trash2 size={18} />
-                    </button>
+                  <div key={idx} className="p-4 bg-primary border border-divider rounded space-y-3">
+                    <div className="flex gap-3">
+                      <input
+                        type="text"
+                        placeholder="Model"
+                        value={v.model}
+                        onChange={(e) => handleVariantChange(idx, 'model', e.target.value)}
+                        className="flex-1 px-3 py-2 border border-divider rounded text-sm"
+                      />
+                      <button
+                        onClick={() => removeVariant(idx)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <input
+                        type="text"
+                        placeholder="Gear Ratio"
+                        value={v.gearRatio || ''}
+                        onChange={(e) => handleVariantChange(idx, 'gearRatio', e.target.value)}
+                        className="px-3 py-2 border border-divider rounded text-sm"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Drag Force"
+                        value={v.dragForce || ''}
+                        onChange={(e) => handleVariantChange(idx, 'dragForce', e.target.value)}
+                        className="px-3 py-2 border border-divider rounded text-sm"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Weight"
+                        value={v.weight || ''}
+                        onChange={(e) => handleVariantChange(idx, 'weight', e.target.value)}
+                        className="px-3 py-2 border border-divider rounded text-sm"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Line Capacity"
+                        value={v.lineCapacity || ''}
+                        onChange={(e) => handleVariantChange(idx, 'lineCapacity', e.target.value)}
+                        className="px-3 py-2 border border-divider rounded text-sm"
+                      />
+                    </div>
                   </div>
                 ))}
               </div>

@@ -35,4 +35,7 @@ export interface Variant {
   capacity?: string;
   ratio?: string;
   drag?: string;
+  gearRatio?: string;
+  dragForce?: string;
+  lineCapacity?: string;
 }

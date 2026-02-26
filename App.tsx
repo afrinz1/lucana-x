@@ -10,9 +10,10 @@ import ProductCategory from './pages/ProductCategory';
 import ProductDetail from './pages/ProductDetail';
 import About from './pages/About';
 import Contact from './pages/Contact';
-import KayakProduct from './pages/KayakProduct';
-import KayaksOverview from './pages/KayaksOverview';
 import AdminProducts from './pages/AdminProducts';
+import FrogAdminProducts from './pages/admin/products/FrogAdminProducts';
+import ReelsAdminProducts from './pages/admin/products/ReelsAdminProducts';
+import RodAdminProducts from './pages/admin/products/RodAdminProducts';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -43,12 +44,12 @@ function App() {
                 <Route path="/products" element={<ProductsIndex />} />
                 <Route path="/products/:categoryId" element={<ProductCategory />} />
                 <Route path="/products/detail/:productId" element={<ProductDetail />} />
-                <Route path="/kayaks" element={<KayaksOverview />} />
-                <Route path="/kayak/:modelId" element={<KayakProduct />} />
-                <Route path="/kayak" element={<KayakProduct />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/admin/products" element={<AdminProducts />} />
+                <Route path="/admin/products/frog" element={<FrogAdminProducts />} />
+                <Route path="/admin/products/reels" element={<ReelsAdminProducts />} />
+                <Route path="/admin/products/rod" element={<RodAdminProducts />} />
               </Routes>
             </div>
             <Footer />

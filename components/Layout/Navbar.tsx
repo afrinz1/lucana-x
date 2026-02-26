@@ -2,16 +2,22 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, Search, ArrowRight } from 'lucide-react';
-import { CATEGORIES, KAYAK_MODELS } from '../../data';
+import { CATEGORIES } from '../../data';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showProductMenu, setShowProductMenu] = useState(false);
-  const [showKayakMenu, setShowKayakMenu] = useState(false);
+  const [showMobileProducts, setShowMobileProducts] = useState(false);
   const navigate = useNavigate();
 
   const handleCategoryClick = (catId: string) => {
     setShowProductMenu(false);
+    navigate(`/products/${catId}`);
+  };
+
+  const handleMobileCategoryClick = (catId: string) => {
+    setShowMobileProducts(false);
+    setIsOpen(false);
     navigate(`/products/${catId}`);
   };
 
@@ -77,44 +83,6 @@ const Navbar: React.FC = () => {
             )}
           </div>
 
-          {/* Refined Kayak Dropdown */}
-          <div 
-            className="relative h-full flex items-center"
-            onMouseEnter={() => setShowKayakMenu(true)}
-            onMouseLeave={() => setShowKayakMenu(false)}
-          >
-            <Link to="/kayaks" className="flex items-center gap-1 text-xs font-medium tracking-widest uppercase hover:text-accent transition-colors">
-              Kayak <ChevronDown size={14} className={`transition-transform duration-300 ${showKayakMenu ? 'rotate-180' : ''}`} />
-            </Link>
-
-            {showKayakMenu && (
-              <div className="absolute top-full left-0 w-[420px] bg-white shadow-2xl border border-divider mt-0 animate-in fade-in slide-in-from-top-1 duration-200">
-                <div className="p-6 border-b border-divider bg-primary/30">
-                  <h3 className="text-[10px] font-bold tracking-[0.2em] uppercase text-accent mb-1">Lucana Fleet</h3>
-                  <p className="text-[11px] text-muted">Professional Angler Platforms</p>
-                </div>
-                <div className="p-6 grid grid-cols-2 gap-x-10 gap-y-4">
-                  {KAYAK_MODELS.map(model => (
-                    <Link 
-                      key={model} 
-                      to={`/kayak/${model.toLowerCase()}`} 
-                      onClick={() => setShowKayakMenu(false)}
-                      className="text-[11px] font-bold uppercase tracking-widest text-charcoal hover:text-accent transition-colors flex items-center gap-2 group"
-                    >
-                      <span className="w-1.5 h-1.5 bg-divider group-hover:bg-accent transition-colors shrink-0"></span>
-                      {model}
-                    </Link>
-                  ))}
-                </div>
-                <div className="p-4 bg-secondary/20 border-t border-divider">
-                  <Link to="/kayaks" onClick={() => setShowKayakMenu(false)} className="text-[9px] font-bold uppercase tracking-widest text-muted hover:text-charcoal flex items-center justify-center gap-2">
-                    View Full Fleet <ArrowRight size={12} />
-                  </Link>
-                </div>
-              </div>
-            )}
-          </div>
-
           <Link to="/about" className="text-xs font-medium tracking-widest uppercase hover:text-accent transition-colors h-full flex items-center">About</Link>
           <Link to="/contact" className="text-xs font-medium tracking-widest uppercase hover:text-accent transition-colors h-full flex items-center">Contact</Link>
         </div>
@@ -139,24 +107,33 @@ const Navbar: React.FC = () => {
                />
                Home
             </Link>
-            <Link to="/products" onClick={() => setIsOpen(false)} className="text-xs font-bold tracking-widest uppercase border-b border-divider pb-2">Products</Link>
             
-            <div className="flex flex-col gap-4">
-              <Link to="/kayaks" onClick={() => setIsOpen(false)} className="text-[10px] font-bold tracking-[0.2em] uppercase text-accent">Kayak Fleet</Link>
-              <div className="grid grid-cols-2 gap-4 ml-4">
-                {KAYAK_MODELS.map(model => (
-                  <Link 
-                    key={model} 
-                    to={`/kayak/${model.toLowerCase()}`} 
-                    onClick={() => setIsOpen(false)}
-                    className="text-xs font-medium uppercase tracking-widest border-b border-divider/50 pb-2"
-                  >
-                    {model}
-                  </Link>
-                ))}
-              </div>
+            {/* Mobile Products Section */}
+            <div>
+              <button 
+                onClick={() => setShowMobileProducts(!showMobileProducts)} 
+                className="w-full text-xs font-bold tracking-widest uppercase border-b border-divider pb-2 flex justify-between items-center"
+              >
+                Products
+                <ChevronDown size={14} className={`transition-transform duration-300 ${showMobileProducts ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {showMobileProducts && (
+                <div className="flex flex-col gap-3 mt-4 pl-4 border-l border-divider">
+                  {CATEGORIES.map(cat => (
+                    <button
+                      key={cat.id}
+                      onClick={() => handleMobileCategoryClick(cat.id)}
+                      className="text-[11px] font-bold uppercase tracking-widest text-left hover:text-accent transition-colors flex justify-between items-center group"
+                    >
+                      {cat.name}
+                      <ArrowRight size={14} className="opacity-0 group-hover:opacity-100 text-accent" />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
-
+            
             <Link to="/about" onClick={() => setIsOpen(false)} className="text-xs font-bold tracking-widest uppercase border-b border-divider pb-2">About</Link>
             <Link to="/contact" onClick={() => setIsOpen(false)} className="text-xs font-bold tracking-widest uppercase border-b border-divider pb-2">Contact</Link>
           </div>

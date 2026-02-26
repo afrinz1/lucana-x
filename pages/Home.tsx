@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Shield, Zap, Anchor, Settings, ChevronDown } from 'lucide-react';
-import { CATEGORIES } from '../data';
+import { CATEGORIES, MOCK_PRODUCTS } from '../data';
 
 const Home: React.FC = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -94,6 +94,41 @@ const Home: React.FC = () => {
                   <p className="text-muted text-sm leading-relaxed mb-8">{cat.description}</p>
                   <span className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-charcoal border-b border-divider pb-1 group-hover:border-accent transition-colors">
                     Explore Series
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Products Catalog */}
+      <section className="py-24 bg-white px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-4">
+            <div>
+              <span className="text-[10px] font-bold tracking-widest uppercase text-accent mb-4 block">Featured Inventory</span>
+              <h2 className="text-4xl font-semibold tracking-wide">Product Catalog</h2>
+            </div>
+            <Link to="/products" className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-charcoal hover:text-accent transition-all group">
+              Browse All Products <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {MOCK_PRODUCTS.slice(0, 8).map((product) => (
+              <Link key={product.id} to={`/products/detail/${product.id}`} className="group relative overflow-hidden bg-primary border border-divider hover:border-accent transition-all">
+                <div className="aspect-square overflow-hidden bg-secondary">
+                  <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out" />
+                </div>
+                <div className="p-6">
+                  <span className="text-[8px] font-bold text-accent uppercase tracking-widest mb-2 block">
+                    {CATEGORIES.find(c => c.id === product.category)?.name || product.category}
+                  </span>
+                  <h3 className="text-sm font-semibold mb-2 group-hover:text-accent transition-colors line-clamp-2">{product.name}</h3>
+                  <p className="text-muted text-xs leading-relaxed mb-4 line-clamp-2">{product.tagline || product.description}</p>
+                  <span className="inline-flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest text-charcoal border-b border-divider pb-1 group-hover:border-accent transition-colors">
+                    View Details
                   </span>
                 </div>
               </Link>

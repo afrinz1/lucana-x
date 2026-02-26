@@ -28,7 +28,6 @@ const Footer: React.FC = () => {
               <ul className="space-y-4 text-sm text-gray-400">
                 <li><Link to="/products/rods" className="hover:text-white transition-colors">Fishing Rods</Link></li>
                 <li><Link to="/products/reels" className="hover:text-white transition-colors">Spinning Reels</Link></li>
-                <li><Link to="/kayaks" className="hover:text-white transition-colors">Kayak Fleet</Link></li>
                 <li><Link to="/products/lines" className="hover:text-white transition-colors">Premium Lines</Link></li>
                 <li><Link to="/products/lures" className="hover:text-white transition-colors">Precision Lures</Link></li>
               </ul>

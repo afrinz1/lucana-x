@@ -173,6 +173,9 @@ const ProductDetail: React.FC = () => {
                       {v.weight && <div className="flex justify-between text-[11px]"><span className="uppercase text-muted">Weight</span><span>{v.weight}</span></div>}
                       {v.ratio && <div className="flex justify-between text-[11px]"><span className="uppercase text-muted">Ratio</span><span>{v.ratio}</span></div>}
                       {v.drag && <div className="flex justify-between text-[11px]"><span className="uppercase text-muted">Drag</span><span>{v.drag}</span></div>}
+                      {v.gearRatio && <div className="flex justify-between text-[11px]"><span className="uppercase text-muted">Gear Ratio</span><span>{v.gearRatio}</span></div>}
+                      {v.dragForce && <div className="flex justify-between text-[11px]"><span className="uppercase text-muted">Drag Force</span><span>{v.dragForce}</span></div>}
+                      {v.lineCapacity && <div className="flex justify-between text-[11px]"><span className="uppercase text-muted">Line Capacity</span><span>{v.lineCapacity}</span></div>}
                    </div>
                 </div>
                 <div className="mt-12 pt-6 border-t border-divider">
