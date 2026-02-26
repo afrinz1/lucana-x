@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-your code
-=======
-other code
->>>>>>> commit
+fin draft
